@@ -1,34 +1,16 @@
 import React, {PropTypes, Component} from 'react';
+import {connect} from '../lib/react-redux';
 import * as types from './constants';
 
 class AddTodo extends Component {
-    static contextTypes = {
-        store: PropTypes.object.isRequired
-    };
-
-    componentDidMount() {
-        const {store} = this.context;
-        this.listener = store.subscribe(() => {
-            this.forceUpdate()
-        })
-    }
-
-    componentWillUnmount() {
-        this.listener()
-    }
-
     render() {
-        const {store} = this.context;
         return (
             <div>
                 <input type="text" ref={input => this.input = input} />
                 <button
                     style={{cursor: 'pointer'}}
                     onClick={() => {
-                        store.dispatch({
-                            type: types.ADD_TODO,
-                            text: this.input.value
-                        });
+                        this.props.onClick(this.input.value);
                         this.input.value = '';
                     }}
                 >
@@ -39,4 +21,15 @@ class AddTodo extends Component {
     }
 }
 
-export default AddTodo;
+const mapStateToProps = state => ({});
+
+const mapDispatchToProps = dispatch => ({
+    onClick(text) {
+        dispatch({
+            type: types.ADD_TODO,
+            text
+        })
+    }
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(AddTodo);

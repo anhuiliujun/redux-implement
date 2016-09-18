@@ -1,26 +1,11 @@
 import React, {PropTypes, Component} from 'react';
+import {connect} from '../lib/react-redux';
 import Todo from './Todo';
 import * as types from './constants';
 
 class List extends Component {
-    static contextTypes = {
-        store: PropTypes.object.isRequired
-    };
-
-    componentDidMount() {
-        const {store} = this.context;
-        this.listener = store.subscribe(() => {
-            this.forceUpdate()
-        })
-    }
-
-    componentWillUnmount() {
-        this.listener()
-    }
-
     render() {
-        const {store} = this.context;
-        const todos = store.getState();
+        const {todos} = this.props;
         return (
             <ul>
                 {todos.map(todo => {
@@ -29,19 +14,26 @@ class List extends Component {
                             key={todo.id}
                             {...todo}
                             onToggleClick={() => {
-                                store.dispatch({
-                                    type: types.TOGGLE_TODO,
-                                    id: todo.id
-                                })
+                                this.props.onToggleClick(todo.id)
                             }}
                         />
                     )
                 })}
-
             </ul>
         )
 
     }
 }
 
-export default List;
+const mapStateToProps = state => ({todos: state});
+
+const mapDispatchToProps = dispatch => ({
+    onToggleClick(id) {
+        dispatch({
+            type: types.TOGGLE_TODO,
+            id
+        })
+    }
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(List);
