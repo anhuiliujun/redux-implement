@@ -7,7 +7,7 @@ const Todo = ({
 }) => {
     return (
         <li
-            style={{textDecoration: completed ? 'line-through': 'none'}}
+            style={{textDecoration: completed ? 'line-through': 'none', cursor: 'pointer'}}
             onClick={onToggleClick}
         >
             {text}

@@ -1,12 +1,11 @@
 import React, {PropTypes, Component} from 'react';
 import Todo from './Todo';
+import * as types from './constants';
 
 class List extends Component {
     render() {
-        const todos = [
-            {id: 1, text: 'learn redux', completed: false},
-            {id: 2, text: 'learn react', completed: true}
-        ];
+        const {store} = this.props;
+        const todos = store.getState();
         return (
             <ul>
                 {todos.map(todo => {
@@ -14,6 +13,12 @@ class List extends Component {
                         <Todo
                             key={todo.id}
                             {...todo}
+                            onToggleClick={() => {
+                                store.dispatch({
+                                    type: types.TOGGLE_TODO,
+                                    id: todo.id
+                                })
+                            }}
                         />
                     )
                 })}
