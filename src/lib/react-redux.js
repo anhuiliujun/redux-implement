@@ -10,6 +10,10 @@ export class Provider extends Component {
     }
 
     render() {
-        return this.props.children;
+        return (
+            <div>
+                {this.props.children}
+            </div>
+        );
     }
 }
