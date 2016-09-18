@@ -3,8 +3,11 @@ import Todo from './Todo';
 import * as types from './constants';
 
 class List extends Component {
+    static contextTypes = {
+        store: PropTypes.object.isRequired
+    };
     render() {
-        const {store} = this.props;
+        const {store} = this.context;
         const todos = store.getState();
         return (
             <ul>

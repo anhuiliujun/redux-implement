@@ -2,8 +2,12 @@ import React, {PropTypes, Component} from 'react';
 import * as types from './constants';
 
 class AddTodo extends Component {
+    static contextTypes = {
+        store: PropTypes.object.isRequired
+    };
+
     render() {
-        const {store} = this.props;
+        const {store} = this.context;
         return (
             <div>
                 <input type="text" ref={input => this.input = input} />
